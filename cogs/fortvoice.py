@@ -35,7 +35,7 @@ ytdl = yt_dlp.YoutubeDL(ytdl_format_options)
 class YTDL(discord.PCMVolumeTransformer):
     """
     """
-    def __init__(self, source, *, data, volume=5):
+    def __init__(self, source, *, data, volume=2):
         super().__init__(source, volume)
         self.data = data
         self.title = data.get("title")
@@ -61,6 +61,10 @@ class FortVoice(commands.Cog):
     """
     def __init__(self, bot) -> None:
         self.bot = bot
+
+    async def _check_connected(self, ctx: commands.Context):
+        if ctx.voice_client is None:
+            await ctx.author.voice.channel.connect()
 
     async def _play_clip(self, ctx: commands.Context, url: str):
         """
@@ -98,8 +102,7 @@ class FortVoice(commands.Cog):
     async def nightmare(self, ctx: commands.Context):
         """
         """
-        if ctx.voice_client is None:
-            await ctx.author.voice.channel.connect()
+        await self._check_connected(ctx)
         if ctx.author.voice:
             async with ctx.typing():
                 await self._play_clip(ctx, "https://www.youtube.com/watch?v=eJNRXYmNpKw")
@@ -111,21 +114,19 @@ class FortVoice(commands.Cog):
     async def bus(self, ctx: commands.Context):
         """
         """
-        if ctx.voice_client is None:
-            await ctx.author.voice.channel.connect()
+        await self._check_connected(ctx)
         if ctx.author.voice:
             async with ctx.typing():
                 await self._play_clip(ctx, "https://www.youtube.com/watch?v=ZbNHUA1FKi0")
         else:
             await ctx.send("You are not connected to a voice channel.")
             raise commands.CommandError("Author not connected to a voice channel.")
-   
+
     @commands.command(help="oh dear")
     async def trouble(self, ctx: commands.Context):
         """
         """
-        if ctx.voice_client is None:
-            await ctx.author.voice.channel.connect()
+        await self._check_connected(ctx)
         if ctx.author.voice:
             async with ctx.typing():
                 await self._play_clip(ctx, "https://www.youtube.com/watch?v=TTEJ3_hdPVM")
@@ -133,11 +134,58 @@ class FortVoice(commands.Cog):
             await ctx.send("You are not connected to a voice channel.")
             raise commands.CommandError("Author not connected to a voice channel.")
 
-    commands.command()
-    async def bussing(self, ctx: commands.Context):
+    @commands.command()
+    async def kerchow(self, ctx: commands.Context):
         """
         """
-        raise NotImplementedError
+        await self._check_connected(ctx)
+        if ctx.author.voice:
+            async with ctx.typing():
+                await self._play_clip(ctx, "https://www.youtube.com/watch?v=zQ4bK2Z1IwE")
+        else:
+            await ctx.send("You are not connected to a voice channel.")
+            raise commands.CommandError("Author not connected to a voice channel.")
+        
+    @commands.command()
+    async def brother(self, ctx: commands.Context):
+        """
+        """
+        await self._check_connected(ctx)
+        if ctx.author.voice:
+            async with ctx.typing():
+                await self._play_clip(
+                    ctx,
+                    "https://youtube.com/shorts/MEXa_N9J0iA?si=GV5xZtwxxolirBhDr"
+                    )
+        else:
+            await ctx.send("You are not connected to a voice channel.")
+            raise commands.CommandError("Author not connected to a voice channel.")
+
+    @commands.command()
+    async def voldelaugh(self, ctx: commands.Context):
+        """
+        """
+        await self._check_connected(ctx)
+        if ctx.author.voice:
+            async with ctx.typing():
+                await self._play_clip(
+                    ctx, "https://www.youtube.com/watch?v=fPll3mpO9oE")
+        else:
+            await ctx.send("You are not connected to a voice channel.")
+            raise commands.CommandError("Author not connected to a voice channel.")
+        
+    @commands.command()
+    async def wow(self, ctx: commands.Context):
+        """
+        """
+        await self._check_connected(ctx)
+        if ctx.author.voice:
+            async with ctx.typing():
+                await self._play_clip(
+                    ctx, "https://www.youtube.com/watch?v=mBr8mcLj9QY")
+        else:
+            await ctx.send("You are not connected to a voice channel.")
+            raise commands.CommandError("Author not connected to a voice channel.")
 
 async def setup(bot: commands.Bot):
     """
