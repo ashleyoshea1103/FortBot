@@ -39,17 +39,14 @@ class FortStats(commands.Cog):
                     return data['global_stats']
         except KeyError as e:
             logger.error(e)
+    
+    async def _get_shop(self, session: aiohttp.ClientSession) -> list[dict[str:str]]:
+        async with session.get(f"{self.API_URL}/v2/shop?lang=en") as req:
+            logger.info("Fetching details about the shop")
+            if req.ok:
+                data = await req.json()
+                return data['shop']
 
-    @commands.command()
-    async def drop(self, ctx: commands.Context):
-        async with aiohttp.ClientSession(headers=self.API_HEADERS) as session:
-            async with session.get(
-                "https://media.fortniteapi.io/images/map.png?showPOI=true") as req:
-                if req.ok:
-                    data = io.BytesIO(await req.read())
-                    await ctx.send(file=discord.File(data, 'map.png'))
-                else:
-                    raise commands.CommandError("")
 
     @commands.command(help="Get the number of kills across all seasons. Fetch for a different \
                       user by including epic name",
@@ -120,6 +117,18 @@ class FortStats(commands.Cog):
             except KeyError as e:
                 await ctx.send("Unable to fetch data from the Fornite API")
                 raise commands.CommandError("Unable to fetch data from the api") from e
+  
+    @commands.command()
+    async def shop_item(self, ctx: commands.Context, item: str):
+        async with aiohttp.ClientSession(headers=self.API_HEADERS) as session:
+            key_fields = ['displayName', 'firstReleaseDate', 'rarity', 'price']
+            shop = await self._get_shop(session=session)
+            for element in shop:
+                filtered = {key: element[key] for key in key_fields}
+                if item == element['displayName']:
+                    await ctx.send(f"Here is information about {item}:")
+                    await ctx.send(filtered)
+                    return
 
 
 async def setup(bot: commands.Bot):
