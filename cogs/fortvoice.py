@@ -186,6 +186,45 @@ class FortVoice(commands.Cog):
         else:
             await ctx.send("You are not connected to a voice channel.")
             raise commands.CommandError("Author not connected to a voice channel.")
+        
+    @commands.command()
+    async def bazinga(self, ctx: commands.Context):
+        """
+        """
+        await self._check_connected(ctx)
+        if ctx.author.voice:
+            async with ctx.typing():
+                await self._play_clip(
+                    ctx, "https://www.youtube.com/watch?v=mBr8mcLj9QY")
+        else:
+            await ctx.send("You are not connected to a voice channel.")
+            raise commands.CommandError("Author not connected to a voice channel.")
+        
+    @commands.command()
+    async def dnd(self, ctx: commands.Context):
+        """
+        """
+        await self._check_connected(ctx)
+        if ctx.author.voice:
+            async with ctx.typing():
+                await self._play_clip(
+                    ctx, "https://www.youtube.com/watch?v=Bl4u7m5Cl4I")
+        else:
+            await ctx.send("You are not connected to a voice channel.")
+            raise commands.CommandError("Author not connected to a voice channel.")
+        
+    @commands.command()
+    async def chair(self, ctx: commands.Context):
+        """
+        """
+        await self._check_connected(ctx)
+        if ctx.author.voice:
+            async with ctx.typing():
+                await self._play_clip(
+                    ctx, "https://www.youtube.com/watch?v=hgKWNcs_20g")
+        else:
+            await ctx.send("You are not connected to a voice channel.")
+            raise commands.CommandError("Author not connected to a voice channel.")
 
 async def setup(bot: commands.Bot):
     """
